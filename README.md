@@ -4,6 +4,7 @@
 Discover beautifully designed minimalist products from around the world.
 <br>
 [Website &rarr;](https://inspov1.vercel.app/)<br />
+[My personal website &rarr;](https://ismailcaner.com)<br />
 
 <br>
 <br>
