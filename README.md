@@ -3,8 +3,7 @@
 <img src="public/images/og.png" alt="Inspo" style="border-radius: 12px; border: 1px solid #e5e7eb" />
 Discover beautifully designed minimalist products from around the world.
 <br>
-[Website &rarr;](https://inspov1.vercel.app/)<br />
-[My personal website &rarr;](https://ismailcaner.com)<br />
+<a href='https://inspov1.vercel.app/'>test</a>
 
 <br>
 <br>
