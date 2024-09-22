@@ -6,6 +6,8 @@
 <br>
 
 My side project website built using `React.js`, `Next.js`, `Shadcn/ui`, `Airtable` and deployed on `Vercel`. 
+<br />
+<br />
 Discover beautifully designed minimalist products from around the world.
 
 ## Tech Stack
