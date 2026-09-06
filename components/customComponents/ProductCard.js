@@ -1,15 +1,14 @@
 import React from 'react';
+import Link from 'next/link';
 import { Badge } from "@/components/ui/badge";
 import styles from '@/styles/ProductsGrid.module.css';
 
-export default function ProductCard({ imageurl, imagealt, description, category, brand, newitem, producturl }) {
+export default function ProductCard({ imageurl, imagealt, description, category, brand, newitem, producturl, slug }) {
   return (
     <div>
-      <a
+      <Link
         className={styles.linkdiv}
-        href={producturl || '#'}
-        target='_blank'
-        rel='noopener noreferrer'
+        href={slug ? `/image/${slug}` : (producturl || '#')}
       >
         {newitem && (
           <div style={{ position: 'absolute', right: 20, top: 20 }}>
@@ -27,7 +26,7 @@ export default function ProductCard({ imageurl, imagealt, description, category,
             />
           )}
         </div>
-      </a>
+      </Link>
 
       <div className={styles.productinfo}>
         <div className={styles.productinfocontent}>
