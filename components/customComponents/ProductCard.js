@@ -2,25 +2,41 @@ import React from 'react';
 import { Badge } from "@/components/ui/badge";
 import styles from '@/styles/ProductsGrid.module.css';
 
-export default function ProductCard({ imageurl, imagealt, description, catagory, brand, newitem, producturl }) {
+export default function ProductCard({ imageurl, imagealt, description, category, brand, newitem, producturl }) {
   return (
     <div>
-    <a className={styles.linkdiv} href={producturl} target='_blank' rel='noopener noreferrer'>
-      <div style={{position:'absolute', right:20, top:20}}>
-    <Badge variant="outline" className={newitem === ' ' ? styles.test : ''} >{newitem}</Badge>
-    </div>
-      <div className={styles.img}>
-        <img className={styles.animation} src={imageurl} alt={imagealt} loading="eager" />
+      <a
+        className={styles.linkdiv}
+        href={producturl || '#'}
+        target='_blank'
+        rel='noopener noreferrer'
+      >
+        {newitem && (
+          <div style={{ position: 'absolute', right: 20, top: 20 }}>
+            <Badge variant="outline">{newitem}</Badge>
+          </div>
+        )}
+
+        <div className={styles.img}>
+          {imageurl && (
+            <img
+              className={styles.animation}
+              src={imageurl}
+              alt={imagealt || ''}
+              loading="lazy"
+            />
+          )}
+        </div>
+      </a>
+
+      <div className={styles.productinfo}>
+        <div className={styles.productinfocontent}>
+          <span>{brand}</span>
+          <span>·</span>
+          <span>{category}</span>
+        </div>
+        <span style={{ fontSize: 16, fontWeight: '400' }}>{description}</span>
       </div>
-    </a>
-    <div className={styles.productinfo}>
-      <div className={styles.productinfocontent}>
-        <span>{brand}</span>
-        <span>·</span>
-        <span>{catagory}</span>
-      </div>
-      <span style={{ fontSize: 16, fontWeight: '400' }}>{description}</span>
     </div>
-  </div>
   );
 }
