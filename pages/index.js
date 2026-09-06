@@ -109,6 +109,7 @@ export default function Home({ data = [] }) {
             return (
               <div className={styles.productcard} key={record.id}>
                 <ProductCard
+                  slug={record.id}
                   newitem={fields.new}
                   imageurl={imageUrl}
                   imagealt={fields.description || 'Product image'}
