@@ -1,7 +1,18 @@
-const { AIRTABLE_API_KEY, AIRTABLE_BASE_ID, AIRTABLE_TABLE_NAME } = process.env;
+const {
+  AIRTABLE_API_KEY,
+  AIRTABLE_BASE_ID,
+  AIRTABLE_TABLE_NAME,
+  REACT_APP_API_KEY,
+  REACT_APP_API_BASE_ID,
+  REACT_APP_DATA_TABLE_NAME,
+} = process.env;
 
 export async function getData() {
-  if (!AIRTABLE_API_KEY || !AIRTABLE_BASE_ID || !AIRTABLE_TABLE_NAME) {
+  const apiKey = AIRTABLE_API_KEY || REACT_APP_API_KEY;
+  const baseId = AIRTABLE_BASE_ID || REACT_APP_API_BASE_ID;
+  const tableName = AIRTABLE_TABLE_NAME || REACT_APP_DATA_TABLE_NAME;
+
+  if (!apiKey || !baseId || !tableName) {
     throw new Error('Missing Airtable environment variables');
   }
 
@@ -9,19 +20,14 @@ export async function getData() {
   let offset;
 
   do {
-    const params = new URLSearchParams({
-      pageSize: '100',
-    });
-
+    const params = new URLSearchParams({ pageSize: '100' });
     if (offset) params.set('offset', offset);
 
-    const url = `https://api.airtable.com/v0/${encodeURIComponent(AIRTABLE_BASE_ID)}/${encodeURIComponent(AIRTABLE_TABLE_NAME)}?${params.toString()}`;
+    const url = `https://api.airtable.com/v0/${encodeURIComponent(baseId)}/${encodeURIComponent(tableName)}?${params.toString()}`;
 
     const response = await fetch(url, {
       method: 'GET',
-      headers: {
-        Authorization: `Bearer ${AIRTABLE_API_KEY}`,
-      },
+      headers: { Authorization: `Bearer ${apiKey}` },
     });
 
     if (!response.ok) {
