@@ -2,7 +2,6 @@ import React from 'react';
 import styles from '../styles/ProductsGrid.module.css';
 import Link from 'next/link';
 import ProductCard from '@/components/customComponents/ProductCard';
-import { ArrowUpRight } from 'lucide-react';
 import { getData } from './api/fetchRecords';
 
 export async function getStaticProps() {
@@ -43,15 +42,6 @@ export default function Home({ data = [] }) {
             );
           })}
         </div>
-
-        <footer style={{ height: '5rem', display: 'flex', justifyContent: 'space-between' }}>
-          <Link style={{ display: 'flex', alignItems: 'center' }} href='https://www.ismailcaner.com/' target='_blank'>
-            İsmail Caner<ArrowUpRight size={16} />
-          </Link>
-          <Link style={{ display: 'flex', alignItems: 'center' }} href='https://www.instagram.com/lsmailcaner/' target='_blank'>
-            Follow me Instagram<ArrowUpRight size={16} />
-          </Link>
-        </footer>
       </div>
     </div>
   );
