@@ -17,14 +17,27 @@ import {
 
 export async function getStaticProps() {
   const data = await getData();
+
   return {
-    props: {data},
-    revalidate: 1,};
+    props: { data },
+    revalidate: 1,
+  };
 }
 
-export default function Home({ data }) {
+export default function Home({ data = [] }) {
   const [category, setCategory] = useState();
-  const filteredRecords = !category || category === 'all' ? data : data.filter(record => { if (category === 'new') { return record.fields.new; }return record.fields.category === category;});
+
+  const filteredRecords = !category || category === 'all'
+    ? data
+    : data.filter((record) => {
+        const fields = record?.fields || {};
+
+        if (category === 'new') {
+          return Boolean(fields.new);
+        }
+
+        return fields.category === category;
+      });
 
   return (
     <div>
@@ -33,7 +46,7 @@ export default function Home({ data }) {
         <div style={{ display: 'flex' }}>
           <div className={styles.categorydesktop}>
             <Select onValueChange={setCategory} value={category}>
-              <SelectTrigger className="w-[100]">
+              <SelectTrigger className="w-[100px]">
                 <SelectValue placeholder="Category" />
               </SelectTrigger>
               <SelectContent>
@@ -45,7 +58,7 @@ export default function Home({ data }) {
                 <SelectItem value="personal">Personal</SelectItem>
                 <SelectItem value="life">Life style</SelectItem>
                 <SelectItem value="new">
-                  <div style={{display:'flex', flexDirection:'row', gap:5, alignItems:'center'}}>
+                  <div style={{ display: 'flex', flexDirection: 'row', gap: 5, alignItems: 'center' }}>
                     <span>New Item</span>
                     <Sparkles size={16} />
                   </div>
@@ -62,15 +75,14 @@ export default function Home({ data }) {
         <div className={styles.submitmobile}>
           <Drawer />
         </div>
-
       </header>
-      
-  <div style={{ margin:'16px 16px 0px 16px'}}>
-      <div className={styles.productsGrid}>
-        <div className={styles.categorymobil}>
-        <Select onValueChange={setCategory} value={category}>
+
+      <div style={{ margin: '16px 16px 0px 16px' }}>
+        <div className={styles.productsGrid}>
+          <div className={styles.categorymobil}>
+            <Select onValueChange={setCategory} value={category}>
               <SelectTrigger className="w-[100%]">
-              <SelectValue placeholder="Category" />
+                <SelectValue placeholder="Category" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">Everything</SelectItem>
@@ -81,39 +93,44 @@ export default function Home({ data }) {
                 <SelectItem value="personal">Personal</SelectItem>
                 <SelectItem value="life">Life style</SelectItem>
                 <SelectItem value="new">
-                  <div style={{display:'flex', flexDirection:'row', gap:5, alignItems:'center'}}>
+                  <div style={{ display: 'flex', flexDirection: 'row', gap: 5, alignItems: 'center' }}>
                     <span>New Item</span>
                     <Sparkles size={16} />
                   </div>
                 </SelectItem>
               </SelectContent>
             </Select>
+          </div>
+
+          {filteredRecords.map((record) => {
+            const fields = record?.fields || {};
+            const imageUrl = fields.png?.[0]?.url;
+
+            return (
+              <div className={styles.productcard} key={record.id}>
+                <ProductCard
+                  newitem={fields.new}
+                  imageurl={imageUrl}
+                  imagealt={fields.description || 'Product image'}
+                  description={fields.description}
+                  category={fields.category}
+                  brand={fields.brand}
+                  producturl={fields.url}
+                />
+              </div>
+            );
+          })}
         </div>
 
-  
-
-        {filteredRecords.map(record => (
-      
-          <div className={styles.productcard} key={record.id}>
-         <ProductCard
-            newitem={record.fields.new}
-            imageurl={record.fields.png[0].url}
-            imagealt={record.fields.description}
-            description={record.fields.description}
-            catagory={record.fields.catagory}
-            brand={record.fields.brand}
-            producturl={record.fields.url}
-            png={record.fields.png } />
-          </div>
-       
-        ))}
+        <footer style={{ height: '5rem', display: 'flex', justifyContent: 'space-between' }}>
+          <Link style={{ display: 'flex', alignItems: 'center' }} href='https://www.ismailcaner.com/' target='_blank'>
+            İsmail Caner<ArrowUpRight size={16} />
+          </Link>
+          <Link style={{ display: 'flex', alignItems: 'center' }} href='https://www.instagram.com/lsmailcaner/' target='_blank'>
+            Follow me Instagram<ArrowUpRight size={16} />
+          </Link>
+        </footer>
       </div>
-
-      <footer style={{ height:'5rem', display:'flex', justifyContent:'space-between' }}>
-        <Link style={{ display: 'flex', alignItems: 'center', alignItems:'center' }} href='https://www.ismailcaner.com/' target='_blank'>İsmail Caner<ArrowUpRight size={16} /></Link>
-        <Link style={{ display: 'flex', alignItems: 'center', alignItems:'center' }} href='https://www.instagram.com/lsmailcaner/' target='_blank'>Follow me Instagram<ArrowUpRight size={16} /></Link>
-      </footer>
-    </div>
     </div>
   );
-};
+}
