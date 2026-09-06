@@ -1,19 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styles from '../styles/ProductsGrid.module.css';
-import { Separator } from "@/components/ui/separator";
 import Link from 'next/link';
 import ProductCard from '@/components/customComponents/ProductCard';
-import Dialog from '@/components/customComponents/Dialog';
-import Drawer from '@/components/customComponents/Drawer';
-import { Sparkles, ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 import { getData } from './api/fetchRecords';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 
 export async function getStaticProps() {
   const data = await getData();
@@ -25,84 +15,15 @@ export async function getStaticProps() {
 }
 
 export default function Home({ data = [] }) {
-  const [category, setCategory] = useState();
-
-  const filteredRecords = !category || category === 'all'
-    ? data
-    : data.filter((record) => {
-        const fields = record?.fields || {};
-
-        if (category === 'new') {
-          return Boolean(fields.new);
-        }
-
-        return fields.category === category;
-      });
-
   return (
     <div>
       <header className={styles.header}>
         <Link href='/' style={{ fontSize: 35, fontWeight: '100' }}>Inspo</Link>
-        <div style={{ display: 'flex' }}>
-          <div className={styles.categorydesktop}>
-            <Select onValueChange={setCategory} value={category}>
-              <SelectTrigger className="w-[100px]">
-                <SelectValue placeholder="Category" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">Everything</SelectItem>
-                <Separator />
-                <SelectItem value="home">Home</SelectItem>
-                <SelectItem value="workspace">Workspace</SelectItem>
-                <SelectItem value="tech">Tech</SelectItem>
-                <SelectItem value="personal">Personal</SelectItem>
-                <SelectItem value="life">Life style</SelectItem>
-                <SelectItem value="new">
-                  <div style={{ display: 'flex', flexDirection: 'row', gap: 5, alignItems: 'center' }}>
-                    <span>New Item</span>
-                    <Sparkles size={16} />
-                  </div>
-                </SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className={styles.submitdesktop}>
-            <Dialog />
-          </div>
-        </div>
-
-        <div className={styles.submitmobile}>
-          <Drawer />
-        </div>
       </header>
 
       <div style={{ margin: '16px 16px 0px 16px' }}>
         <div className={styles.productsGrid}>
-          <div className={styles.categorymobil}>
-            <Select onValueChange={setCategory} value={category}>
-              <SelectTrigger className="w-[100%]">
-                <SelectValue placeholder="Category" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">Everything</SelectItem>
-                <Separator />
-                <SelectItem value="home">Home</SelectItem>
-                <SelectItem value="workspace">Workspace</SelectItem>
-                <SelectItem value="tech">Tech</SelectItem>
-                <SelectItem value="personal">Personal</SelectItem>
-                <SelectItem value="life">Life style</SelectItem>
-                <SelectItem value="new">
-                  <div style={{ display: 'flex', flexDirection: 'row', gap: 5, alignItems: 'center' }}>
-                    <span>New Item</span>
-                    <Sparkles size={16} />
-                  </div>
-                </SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          {filteredRecords.map((record) => {
+          {data.map((record) => {
             const fields = record?.fields || {};
             const imageUrl = fields.png?.[0]?.url;
 
